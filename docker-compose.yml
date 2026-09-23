@@ -1,0 +1,74 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: apollo
+      POSTGRES_USER: apollo
+      POSTGRES_PASSWORD: apollo
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Anything in this folder runs once, the first time the volume is empty.
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U apollo -d apollo"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./docker/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+  mqtt-ingestor:
+    build: .
+    command: python -m src.mqtt_ingestor
+    environment: &env
+      PG_HOST: postgres
+      PG_PORT: "5432"
+      PG_DB: apollo
+      PG_USER: apollo
+      PG_PASSWORD: apollo
+      MQTT_HOST: mosquitto
+      MQTT_PORT: "1883"
+      MODBUS_HOST: modbus-device
+      MODBUS_PORT: "5020"
+      DATASET_PATH: data/household_power_consumption.txt
+      DATASET_PROFILE: household
+      SAMPLE_INTERVAL_SECONDS: "0.5"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mosquitto:
+        condition: service_started
+
+  mqtt-publisher:
+    build: .
+    command: python -m src.mqtt_publisher
+    environment: *env
+    depends_on:
+      - mqtt-ingestor
+
+  modbus-device:
+    build: .
+    command: python -m src.modbus_device
+    environment: *env
+    ports:
+      - "5020:5020"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  modbus-poller:
+    build: .
+    command: python -m src.modbus_poller
+    environment: *env
+    depends_on:
+      - modbus-device
+
+volumes:
+  pgdata:
