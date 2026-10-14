@@ -1,0 +1,26 @@
+# Generated, do not hand edit. Regenerate with:
+#   sed -E 's/[=<>!~].*//' requirements.txt | grep -E '^[A-Za-z]' > u.txt
+#   uv pip compile --python-version 3.11 -o requirements.lock.txt u.txt
+#   pip-audit -r requirements.lock.txt
+colorama==0.4.6
+    # via pytest
+hypothesis==6.169.1
+    # via -r C:/Users/Public/fxwork/apollo-iot-telemetry/_u.txt
+iniconfig==2.3.1
+    # via pytest
+packaging==26.3
+    # via pytest
+paho-mqtt==2.1.0
+    # via -r C:/Users/Public/fxwork/apollo-iot-telemetry/_u.txt
+pluggy==1.6.0
+    # via pytest
+psycopg2-binary==2.9.13
+    # via -r C:/Users/Public/fxwork/apollo-iot-telemetry/_u.txt
+pygments==2.21.0
+    # via pytest
+pymodbus==3.16.1
+    # via -r C:/Users/Public/fxwork/apollo-iot-telemetry/_u.txt
+pytest==9.1.1
+    # via -r C:/Users/Public/fxwork/apollo-iot-telemetry/_u.txt
+sortedcontainers==2.4.0
+    # via hypothesis
