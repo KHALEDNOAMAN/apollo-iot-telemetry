@@ -1,3 +1,9 @@
-paho-mqtt==2.1.0
-pymodbus==3.6.9
-psycopg2-binary==2.9.9
+# Minimum safe versions, verified with pip-audit against the fully resolved
+# dependency set on 14 Oct 2026. This repo audited clean before and after.
+paho-mqtt>=2.1.0
+pymodbus>=3.6.9
+psycopg2-binary>=2.9.10
+
+# Test only. pytest was already imported by tests/ without being declared.
+pytest>=8.3.4
+hypothesis>=6.122.3
