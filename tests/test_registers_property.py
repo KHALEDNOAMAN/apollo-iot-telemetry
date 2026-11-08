@@ -16,7 +16,8 @@ quantized value instead, which is exact and deterministic.
 """
 from datetime import datetime, timezone
 
-from hypothesis import given, settings, strategies as st
+from hypothesis import given, settings
+from hypothesis import strategies as st
 
 from src import registers
 

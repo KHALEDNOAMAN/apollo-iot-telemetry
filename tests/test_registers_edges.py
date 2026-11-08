@@ -16,7 +16,8 @@ behaviour rather than marked as a failure.
 """
 from datetime import datetime, timezone
 
-from hypothesis import given, settings, strategies as st
+from hypothesis import given, settings
+from hypothesis import strategies as st
 
 from src import registers
 

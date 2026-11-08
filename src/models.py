@@ -8,7 +8,7 @@ storage layer stay transport agnostic.
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from typing import Any
 
